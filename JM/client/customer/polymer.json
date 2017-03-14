@@ -1,0 +1,20 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/jm-app.html",
+  "fragments": [
+    "src/jm-about.html",
+    "src/jm-login.html",
+    "src/jm-register.html",
+    "src/jm-delete.html",
+    "src/jm-view404.html"
+  ],
+  "sourceGlobs": [
+    "src/**/*",
+    "images/**/*",
+    "bower.json"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}

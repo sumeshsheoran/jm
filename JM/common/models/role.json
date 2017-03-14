@@ -1,0 +1,33 @@
+{
+  "name": "role",
+  "base": "BaseEntity",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "ValidationMixin": true
+  },
+  "properties": {
+    "roleName": {
+      "type": "string"
+    },
+    "roleId": {
+      "type": "number",
+      "id": true,
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "appusers": {
+      "type": "hasMany",
+      "model": "appuser",
+      "foreignKey": "roleId",
+      "through": "roleMapping"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

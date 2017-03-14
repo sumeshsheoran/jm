@@ -1,0 +1,73 @@
+
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html" >
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+ 
+
+<dom-module id="jm-about">
+  <link rel="import" type="css" href="../css/bootstrap.css">
+  
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        
+      }
+    
+    </style>
+    <section id="about" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>About JOBAOM</h2>
+                <p>Jobaom sends you job openings SMS regularly. Pay on monthly basis and get job alerts on your mobile.Other services coming soon. <a href="/#/register">Register here</a> or call us at 9812104767. </p>
+               
+            </div>
+        </div>
+    </section>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'jm-about',
+      
+      properties:{
+        accessToken:{
+          type:String
+        },
+            list:{
+                type: Array,
+                value: [],
+                notify: true,
+      reflectToAttribute: true
+            },
+            allCheck:{
+              type:Boolean
+            },
+            
+            checked: {
+      type: Boolean,
+      notify: true,
+      reflectToAttribute: true
+    }
+      },
+      ready:function(){
+       console.log(this.accessToken);
+
+               // this.$.getUserList.url = ;
+               
+                //this.$.getUserList.generateRequest();
+            }
+    //  list: function(){
+    //     return [1,2];
+    //   }
+    });
+  </script>
+</dom-module>

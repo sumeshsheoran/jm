@@ -1,0 +1,51 @@
+{
+  "name": "roleMapping",
+  "base": "BaseEntity",
+  "strict": false,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "ValidationMixin": false,
+    "ObserverMixin": true,
+    "HistoryMixin": false,
+    "EvCacheMixin": false,
+    "ExpressionAstPopulatorMixin": false,
+    "EvAuditFieldsMixin": true,
+    "EvDatasourceJuggler": true,
+    "DataPersonalizationMixin": false,
+    "ServicePersonalizationMixin": false,
+    "SwitchDatasourceMixin": true,
+    "EvVersionMixin": true,
+    "EvRemoteMethodMixin": true,
+    "BusinessRuleMixin": false,
+    "SoftDeleteMixin": true,
+    "ClearBaseAcls": {}
+  },
+  "properties": {
+    "userId": {
+      "type": "string",
+      "required": true
+    },
+    "roleId": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "userId"
+    },
+    "role": {
+      "type": "belongsTo",
+      "model": "role",
+      "foreignKey": "roleId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

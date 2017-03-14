@@ -1,0 +1,171 @@
+
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html" >
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+
+<dom-module id="jm-delete">
+  
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      .btn-blue{
+      
+        padding: 12px;
+            border-radius: 5px;
+            height: 35px;
+            background-color: indigo;
+            color: white;
+            cursor:pointer;
+      }
+    </style>
+   <iron-localstorage name="my-app-storage"
+		    value="{{accessToken}}" on-iron-localstorage-load="getUserList"
+		    </iron-localstorage>
+    <iron-ajax id ="deleteAjax" method="POST"  content-type="application/json" handle-as="json" on-response="deleteSuccess" on-error="deleteError"></iron-ajax>
+    <iron-ajax  id="getUserListAjax"  method="GET" handle-as="json"  on-response="getUserListSuccess"
+            content-type="application/json" on-error="getUserListError"></iron-ajax> 
+          <paper-toast id="toast" class="fit-bottom" style="text-align: center"> </paper-toast>
+          <div on-change ="selectAll">Select all  <paper-checkbox id ={{selectall}} checked={{allCheck}}> </div>
+ <template class="layout vertical center" is="dom-repeat" items="[[list]]">
+                        <div class="layout horizontal center">
+                            
+                            <paper-checkbox id ={{item.mobile}} checked={{item.checked}}>
+                              <div>[[item.Name]] : [[item.Mobile]] : [[item.Qualification]] : [[item.Email]]</div>
+                            </paper-checkbox>
+                        </div>
+                    </template>
+                    
+                    <div style="margin:45px">
+                     <paper-button raised on-click="delete" class="btn-blue " style="margin-top:45px">Delete Selected</paper-button>
+   </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'jm-delete',
+      
+      properties:{
+        acessToken:{
+          type:String
+        },
+            list:{
+                type: Array,
+                value: [],
+                notify: true,
+      reflectToAttribute: true
+            },
+            allCheck:{
+              type:Boolean
+            },
+            
+            checked: {
+      type: Boolean,
+      notify: true,
+      reflectToAttribute: true
+    }
+      },
+      ready:function(){
+       
+
+               // this.$.getUserList.url = ;
+               
+                //this.$.getUserList.generateRequest();
+            },
+            getUserList:function(){
+this.$.getUserListAjax.url="http://localhost:3000/api/consumers?access_token="+this.accessToken;
+this.$.getUserListAjax.generateRequest();
+            }
+            ,
+            selectAll:function(){ 
+if(this.allCheck) {
+  var l= this.list;
+  for(var i=0;i<l.length;i++){
+                this.set('list.'+i+'.checked',true);
+              }
+             
+             
+
+}
+else {
+   var l = this.list;
+  for(var i=0;i<l.length;i++){
+                this.set('list.'+i+'.checked',false);
+              }
+             
+              
+
+}
+            },
+            getUserListError: function(event) {
+                  if(event.detail.request.xhr.response)
+        this.$.toast.show(event.detail.request.xhr.response.error.errors[0].message);
+        else
+        this.$.toast.show('SOME ERROR OCCURED!!PLEASE CHECKED IF YOU ARE LOGGED IN');
+            },
+            getUserListSuccess: function(data) {
+              var l = data.detail.response;
+              for(var i=0;i<l.length;i++){
+                l[i]['checked']=false;
+              }
+             
+              console.log('list',this.list);
+                this.set('list', l);
+
+
+       // var a =[1,2,3];
+        //this.set('list', a);
+
+      },
+      checkboxChanged : function(event){
+    if(event.target.checked) {
+        console.log(event.target.value);
+    }
+},
+      delete:function(){
+        var nums = [];
+      
+        for(var i=0;i<this.list.length;i++){
+          console.log(this.list[i]);
+          if(this.list[i]['checked']==true){
+            nums.push(this.list[i].Mobile);
+          }
+        }
+        //http://deletegateway.me/api/v3/messages/send?email=sheoran.iitr@gmail.com&password=pass123&device=39664&number=[9991956597,7895387267]&message=Hi, this is welcome message from JobAOM.com. Now get  job alerts on your mobile. Thanks
+        this.$.deleteAjax.url = "http://localhost:3000/api/consumers/deletebyMobile?access_token="+this.acessToken;
+       
+        var bod = {"number":nums};
+        this.$.deleteAjax.body =bod;
+        this.$.deleteAjax.generateRequest();
+        console.log("send",this.list);
+      },
+      deleteSuccess:function() {
+        console.log("deleted");
+        this.$.toast.show('Deleted Successfully!!!');
+        window.location.reload();
+         
+
+      },
+      deleteError:function(event){
+        console.log("deleteError");
+         if(event.detail.request.xhr.response)
+        this.$.toast.show(event.detail.request.xhr.response.error.errors[0].message);
+        else
+        this.$.toast.show('SOME ERROR OCCURED!!PLEASE CHECKED IF YOU ARE LOGGED IN');
+      }
+    //  list: function(){
+    //     return [1,2];
+    //   }
+    });
+  </script>
+</dom-module>

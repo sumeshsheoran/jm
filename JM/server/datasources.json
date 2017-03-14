@@ -1,0 +1,19 @@
+{
+  "db": {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "url": "mongodb://127.0.0.1:27017/commondb",
+    "database": "commondb",
+    "name": "db",
+    "connector": "mongodb",
+    "connectionTimeout": 50000
+  },
+  "appdata": {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "url": "mongodb://127.0.0.1:27017/appdata",
+    "database": "appdata",
+    "name": "appdata",
+    "connector": "mongodb"
+  }
+}

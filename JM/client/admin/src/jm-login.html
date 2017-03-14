@@ -1,0 +1,113 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html" >
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+
+
+<dom-module id="jm-login">
+   <link rel="import" type="css" href="../css/bootstrap.css">
+  
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+       .margin-bottom-10{
+        margin-bottom:10px;
+      }
+      .btn-blue{
+      text-align:center;
+        padding: 12px;
+            border-radius: 5px;
+            height: 35px;
+            background-color: indigo;
+            color: white;
+            cursor:pointer;
+      }
+    </style>
+    <iron-localstorage name="my-app-storage"
+		    value="{{accessToken}}"
+		    </iron-localstorage>
+    <iron-ajax id ="loginAjax" method="POST" on-response="loginSuccess" on-error="loginError" content-type="application/json" handle-as="json" ></iron-ajax>
+   
+            <paper-toast id="toast" class="fit-bottom" style="text-align: center">
+		</paper-toast>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <input is="iron-input" class="form-control margin-bottom-10" id="usern" type="text" bind-value="{{username}}" placeholder="userame" required></input>
+      </div>
+     <div class="col-md-4 col-md-offset-4">
+     
+        <input is="iron-input" class="form-control " id="password" type="password" bind-value="{{password}}" placeholder="password" required></input>
+        </div>
+      
+    </div>
+          
+                    
+                    <div style="margin:45px; text-align:center">
+                     <paper-button raised on-click="login" class="btn-blue " style="margin-top:45px">Login</paper-button>
+   </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'jm-login',
+      
+      properties:{
+            username:{
+                type:String
+            },
+            password:{
+                type:String
+            },
+            accessToken:{
+                type:String
+            }
+    },
+      
+      ready:function(){
+       
+
+               // this.$.getUserList.url = ;
+               
+                //this.$.getUserList.generateRequest();
+            },
+        
+      login:function(){
+       
+        //http://logingateway.me/api/v3/messages/send?email=sheoran.iitr@gmail.com&password=pass123&device=39664&number=[9991956597,7895387267]&message=Hi, this is welcome message from JobAOM.com. Now get  job alerts on your mobile. Thanks
+        this.$.loginAjax.url = "http://localhost:3000/api/admins/login";
+        
+        var bod = {"username":this.username,"password":this.password}
+        this.$.loginAjax.body =bod;
+        this.$.loginAjax.generateRequest();
+        
+      },
+      loginSuccess:function(event) {
+        console.log("loginSnt");
+        this.set('accessToken', event.detail.response.id);
+				console.log(this.accessToken);
+				window.history.pushState({}, null, '#/home');
+				window.dispatchEvent(new CustomEvent('location-changed'));
+        
+
+      },
+      loginError:function(event){
+        if(event.detail.request.xhr.response)
+        this.$.toast.show(event.detail.request.xhr.response.error.errors[0].message);
+        else
+        this.$.toast.show('SOME ERROR OCCURED!!');
+      }
+    //  list: function(){
+    //     return [1,2];
+    //   }
+    });
+  </script>
+</dom-module>

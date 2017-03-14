@@ -1,0 +1,24 @@
+{
+	"contexts": {
+		"commondb": {
+			"id": 0,
+			"tenantId": "default",
+			"remoteUser": "upload"
+		}
+	},
+	"files": [
+		{
+			"model": "role",
+			"enabled": true,
+			"file": "commondb/role.json",
+			"ctxId": "commondb"
+		},
+		{
+			"model": "role-mapping",
+			"enabled": true,
+			"file": "commondb/role-mapping.json",
+			"ctxId": "commondb"
+		}
+		
+	]
+}

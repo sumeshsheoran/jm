@@ -1,0 +1,57 @@
+{
+  "name": "consumer",
+  "plural": "consumers",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+   
+    "Name": {
+      "type": "string",
+      "required": true
+    },
+    "Mobile": {
+      "type": "number",
+      "required": true
+    },
+	"Qualification":{
+	"type":"string",
+	"required":true
+	},
+	"Email":{
+	"type":"string",
+	"required":true
+	}
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "find",
+      "model": "consumer"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "deleteByMobile",
+      "model": "consumer"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY",
+      "property": "find",
+      "model": "consumer"
+    }
+  ],
+  "methods": {}
+}

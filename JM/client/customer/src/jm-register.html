@@ -1,0 +1,129 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+
+    
+
+<dom-module id="jm-register">
+<link rel="import" type="css" href="../css/bootstrap.css">
+
+  <template>
+    <style include="shared-styles"></style>
+    
+     
+    <style>:host {
+        display: block;
+        
+      }  
+  
+
+    </style>
+    <iron-ajax id="registerAjax" method="POST" on-response="registerSuccess" content-type="application/json" handle-as="json"
+      on-error="registerError"></iron-ajax>
+                <paper-toast id="toast" class="fit-bottom" style="text-align: center">
+                  </paper-toast>
+                  <div id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+                      
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+              <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">jobaom.com</h1>
+                        <p class="intro-text">Get Job Alerts on your mobile.Register here to start.</p>
+						<p class="intro-text">Free for two weeks</p>
+                        
+                    </div>
+                </div>
+              <div style ="">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <input is="iron-input" class="form-control margin-bottom-10" id="Name" type="text" bind-value="{{user.Name}}" placeholder="Name" required></input>
+      </div>
+     <div class="col-md-4 col-md-offset-4">
+     
+        <input is="iron-input" class="form-control " id="Mobile" type="text" bind-value="{{user.Mobile}}" placeholder="Mobile" required></input>
+        </div>
+      <div class="col-md-4 col-md-offset-4">
+     
+        <input is="iron-input" class="form-control " id="Qualification" type="text" bind-value="{{user.Qualification}}" placeholder="Qualification" required></input>
+        </div>
+      <div class="col-md-4 col-md-offset-4">
+     
+        <input is="iron-input" class="form-control " id="Email" type="text" bind-value="{{user.Email}}" placeholder="Email" required></input>
+        </div>
+    </div>
+    <div class="horizontal layout action-button-holder margin-bot-10">
+      <paper-button id="submit" class= "btn btn-primary center" toggles raised on-tap="register"> Register </paper-button>
+  </div>
+  </div>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    
+    <!-- Download Section -->
+   
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy; jobaom.com 2017</p>
+        </div>
+    </footer>
+
+   
+                    </div>
+ 
+  </template>
+
+  <script>
+    Polymer({
+      is: 'jm-register',
+      properties: {
+        user:{
+          type:Object,
+          value :{
+            "Name": "",
+            "Mobile":""
+          }
+        }
+
+      },
+    ready:function(){
+
+    },
+    register:function(){
+      console.log(this.user)
+      
+        this.$.registerAjax.url = "http://localhost:3000/api/consumers";
+        
+        var bod = {"Name": this.$.Name.value,"Mobile": this.$.Mobile.value};
+        this.$.registerAjax.body =bod;
+        this.$.registerAjax.generateRequest();
+    },
+    registerSuccess:function() {
+        console.log("registerSnt");
+        this.$.toast.show('Registered User Succesfully!!');
+    window.location.reload();
+
+
+      },
+      registerError:function(){
+      if(event.detail.request.xhr.response)
+        this.$.toast.show(event.detail.request.xhr.response.error.errors[0].message);
+        else
+        this.$.toast.show('SOME ERROR OCCURED!!PLEASE CHECKED IF YOU ARE LOGGED IN');
+      }
+      
+    });
+  </script>
+</dom-module>
